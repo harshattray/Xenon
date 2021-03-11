@@ -1,17 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import ReactDOM from "react-dom";
+import { useState } from "react";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+const App = () => {
+    const [input, setInput] = useState("");
+    const [code, setCode] = useState("");
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+    const onClick = () => {
+        console.log(input);
+    };
+    return (
+        <div>
+            <textarea
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+            ></textarea>
+            <div>
+                <button onClick={onClick}>Submit</button>
+            </div>
+            <pre>{code}</pre>
+        </div>
+    );
+};
+
+ReactDOM.render(<App />, document.querySelector("#root"));
