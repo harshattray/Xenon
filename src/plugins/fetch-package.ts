@@ -9,42 +9,50 @@ export const fetchPackage = (codeBlock: string) => {
 	return {
 		name: "fetch-package",
 		setup(build: esbuild.PluginBuild) {
-			build.onLoad({ filter: /.*/ }, async (args: any) => {
-				if (args.path === "index.js") {
-					return {
-						loader: "jsx",
-						contents: codeBlock,
-					};
-				}
-				// const cachedResult = await bifrostCache.getItem<esbuild.OnLoadResult>(
-				// 	args.path
-				// );
+			build.onLoad({ filter: /(^index\.js$)/ }, () => {
+				return {
+					loader: "jsx",
+					contents: codeBlock,
+				};
+			});
 
-				// if (cachedResult) {
-				// 	return cachedResult;
-				// }
+            build.onLoad({filter:/.*/},async(args: any) =>{
+                const cachedResult = await bifrostCache.getItem<esbuild.OnLoadResult>(
+					args.path
+				);
+				if (cachedResult) return cachedResult;
+            })
+
+			build.onLoad({ filter: /.css$/ }, async (args: any) => {
+				
 				const { data, request } = await axios.get(args.path);
-
-				const fileType = args.path.match(/.css$/) ? "css" : "jsx";
-
 				const escapedCssString = data
 					.replace(/\n/g, "")
 					.replace(/"/g, '\\"')
 					.replace(/'/g, "\\'");
 
-				const contents =
-					fileType === "css"
-						? `
+				const contents =`
                 const style = document.createElement("style");
                 style.innerText = '${escapedCssString}';
                 document.head.appendChild(style)
                 `
-						: data;
 				//style.innerText = 'body{ background-color: "cyan"}';
 
 				const result: esbuild.OnLoadResult = {
 					loader: "jsx",
 					contents: contents,
+					resolveDir: new URL("./", request.responseURL).pathname,
+				};
+				await bifrostCache.setItem(args.path, result);
+				return result;
+			});
+
+			build.onLoad({ filter: /.*/ }, async (args: any) => {
+				const { data, request } = await axios.get(args.path);
+
+				const result: esbuild.OnLoadResult = {
+					loader: "jsx",
+					contents: data,
 					resolveDir: new URL("./", request.responseURL).pathname,
 				};
 				await bifrostCache.setItem(args.path, result);
