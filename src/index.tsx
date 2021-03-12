@@ -2,6 +2,7 @@ import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
 import { fetchPlugin } from "./plugins/fetch-plugin";
+import { fetchPackage } from './plugins/fetch-package'
 
 const App = () => {
     const [input, setInput] = useState("");
@@ -25,7 +26,10 @@ const App = () => {
             entryPoints: ["index.js"],
             bundle: true,
             write: false,
-            plugins: [fetchPlugin(input)],
+            plugins: [
+                fetchPlugin(),
+                fetchPackage(input)
+            ],
             define: {
                 "process.env.NODE_ENV": '"production"',
                 global: "window",
