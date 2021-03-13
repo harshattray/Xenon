@@ -2,8 +2,8 @@ import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
 import { fetchPlugin } from "./plugins/fetch-plugin";
-import { fetchPackage } from './plugins/fetch-package'
-import CodeEditorComponent from './components/codeeditor'
+import { fetchPackage } from "./plugins/fetch-package";
+import CodeEditorComponent from "./components/codeeditor";
 
 const App = () => {
     const [input, setInput] = useState("");
@@ -23,8 +23,10 @@ const App = () => {
 
     const onClick = async () => {
         if (!ref.current) return;
+
         //resetting the htm block within the iframe
         iframeRef.current.srcdoc = html;
+
         const result = await ref.current.build({
             entryPoints: ["index.js"],
             bundle: true,
@@ -66,7 +68,10 @@ const App = () => {
   `;
     return (
         <div>
-            <CodeEditorComponent initialValue="// Enter JS code Here" onChange={(value) => setInput(value)} />
+            <CodeEditorComponent
+                initialValue="// Enter JS code Here"
+                onChange={(value) => setInput(value)}
+            />
             <textarea
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
@@ -74,7 +79,12 @@ const App = () => {
             <div>
                 <button onClick={onClick}>Submit</button>
             </div>
-            <iframe title="mirror" ref={iframeRef} sandbox="allow-scripts" srcDoc={html}></iframe>
+            <iframe
+                title="mirror"
+                ref={iframeRef}
+                sandbox="allow-scripts"
+                srcDoc={html}
+            ></iframe>
         </div>
     );
 };

@@ -1,12 +1,18 @@
 import MonacoEditor, { EditorDidMount } from "@monaco-editor/react";
+import { useRef } from "react";
+import prettier from "prettier";
+import parser from "prettier/parser-babel";
 
 interface EditorProps {
     initialValue: string;
-    onChange: (value: string) => void
+    onChange: (value: string) => void;
 }
 
-const CodeEditorComponent: React.FC<EditorProps> = ({ initialValue, onChange }) => {
-
+const CodeEditorComponent: React.FC<EditorProps> = ({
+    initialValue,
+    onChange,
+}) => {
+    const editorRef = useRef<any>();
 
     /**
      * editorDidMount is called initially when the editor mounts analogous to componentDidMount
@@ -14,15 +20,28 @@ const CodeEditorComponent: React.FC<EditorProps> = ({ initialValue, onChange }) 
      * @param monacoEditor  refers to the context of the editor. We can watch for changes in the editor here
      */
     const editorMount: EditorDidMount = (fetchVal, monacoEditor) => {
+        editorRef.current = monacoEditor;
         monacoEditor.onDidChangeModelContent(() => {
-            onChange(fetchVal())
+            onChange(fetchVal());
         });
-        monacoEditor.getModel()?.updateOptions({ tabSize: 2 })
-    }
+        monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
+    };
 
+    const onClickFormat = () => {
+        const preFormatted = editorRef.current.getModel().getValue();
+        const formatted = prettier.format(preFormatted, {
+            parser: "babel",
+            plugins: [parser],
+            useTabs: false,
+            semi: true,
+            singleQuote: true,
+        });
+        editorRef.current.setValue(formatted);
+    };
 
     return (
         <div>
+            <button onClick={onClickFormat}>Format</button>
             <MonacoEditor
                 value={initialValue}
                 language="javascript"
