@@ -16,26 +16,25 @@ export const fetchPackage = (codeBlock: string) => {
 				};
 			});
 
-            build.onLoad({filter:/.*/},async(args: any) =>{
-                const cachedResult = await bifrostCache.getItem<esbuild.OnLoadResult>(
+			build.onLoad({ filter: /.*/ }, async (args: any) => {
+				const cachedResult = await bifrostCache.getItem<esbuild.OnLoadResult>(
 					args.path
 				);
 				if (cachedResult) return cachedResult;
-            })
+			});
 
 			build.onLoad({ filter: /.css$/ }, async (args: any) => {
-				
 				const { data, request } = await axios.get(args.path);
 				const escapedCssString = data
 					.replace(/\n/g, "")
 					.replace(/"/g, '\\"')
 					.replace(/'/g, "\\'");
 
-				const contents =`
+				const contents = `
                 const style = document.createElement("style");
                 style.innerText = '${escapedCssString}';
                 document.head.appendChild(style)
-                `
+                `;
 				//style.innerText = 'body{ background-color: "cyan"}';
 
 				const result: esbuild.OnLoadResult = {

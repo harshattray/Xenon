@@ -1,7 +1,11 @@
 import MonacoEditor, { EditorDidMount } from "@monaco-editor/react";
 import { useRef } from "react";
+import "./codeeditor.css";
+import './syntax.css';
 import prettier from "prettier";
 import parser from "prettier/parser-babel";
+import codeshift from 'jscodeshift';
+import Highlighter from 'monaco-jsx-highlighter';
 
 interface EditorProps {
     initialValue: string;
@@ -25,23 +29,45 @@ const CodeEditorComponent: React.FC<EditorProps> = ({
             onChange(fetchVal());
         });
         monacoEditor.getModel()?.updateOptions({ tabSize: 2 });
+
+        //format highlighter fix for jsx
+
+        const highlighter = new Highlighter(
+            //@ts-ignore
+            window.monaco,
+            codeshift,
+            monacoEditor
+        );
+        highlighter.highLightOnDidChangeModelContent(
+            () => { },
+            () => { },
+            undefined,
+            () => { }
+        );
     };
 
     const onClickFormat = () => {
         const preFormatted = editorRef.current.getModel().getValue();
-        const formatted = prettier.format(preFormatted, {
-            parser: "babel",
-            plugins: [parser],
-            useTabs: false,
-            semi: true,
-            singleQuote: true,
-        });
+        const formatted = prettier
+            .format(preFormatted, {
+                parser: "babel",
+                plugins: [parser],
+                useTabs: false,
+                semi: true,
+                singleQuote: true,
+            })
+            .replace(/\n$/, ""); // removing the empty line added by prettier
         editorRef.current.setValue(formatted);
     };
 
     return (
-        <div>
-            <button onClick={onClickFormat}>Format</button>
+        <div className="editor-wrapper">
+            <button
+                className="button button-format is-primary is-small"
+                onClick={onClickFormat}
+            >
+                Format
+			</button>
             <MonacoEditor
                 value={initialValue}
                 language="javascript"

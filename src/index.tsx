@@ -1,3 +1,4 @@
+import "bulmaswatch/darkly/bulmaswatch.min.css";
 import ReactDOM from "react-dom";
 import { useState, useEffect, useRef } from "react";
 import * as esbuild from "esbuild-wasm";
