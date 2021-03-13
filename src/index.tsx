@@ -23,6 +23,8 @@ const App = () => {
 
     const onClick = async () => {
         if (!ref.current) return;
+        //resetting the htm block within the iframe
+        iframeRef.current.srcdoc = html;
         const result = await ref.current.build({
             entryPoints: ["index.js"],
             bundle: true,
@@ -51,9 +53,9 @@ const App = () => {
     <div id="root"></div>
     <script>
     window.addEventListener('message',(event) => {
-        try{
-            eval(event.data)
-        }catch(error){
+        try {
+           eval(event.data)
+        } catch(error){
             const root = document.querySelector('#root');
             root.innerHTML = '<div style="color:red"><h4>Runtime Error</h4>' + error + '</div>'
         }
