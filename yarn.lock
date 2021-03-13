@@ -8250,7 +8250,7 @@
   "resolved" "https://registry.npmjs.org/mkdirp/-/mkdirp-1.0.4.tgz"
   "version" "1.0.4"
 
-"monaco-editor@^0.21.2":
+"monaco-editor@^0.21.2", "monaco-editor@0.21.3":
   "integrity" "sha512-9N7wATLpi+googstvtm6IKg97vPQ77FDYEpkow5tLriM/VJ0DaTRyUP4UVzcoH7KlPDX+e/rE7/imcOUeGkT6g=="
   "resolved" "https://registry.npmjs.org/monaco-editor/-/monaco-editor-0.21.3.tgz"
   "version" "0.21.3"
