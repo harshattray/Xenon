@@ -2,6 +2,7 @@ import { useState } from "react";
 import CodeEditorComponent from "./codeeditor";
 import CodePreviewComponent from "./codepreview";
 import ServiceTrigger from "../bundler";
+import ResizableComponent from "./resizable";
 
 const CodeVaultComponent = () => {
     const [input, setInput] = useState("");
@@ -18,16 +19,15 @@ const CodeVaultComponent = () => {
     };
 
     return (
-        <div>
-            <CodeEditorComponent
-                initialValue="// Enter JS code below"
-                onChange={(value) => setInput(value)}
-            />
-            <div>
-                <button onClick={onClick}>Submit</button>
+        <ResizableComponent direction="horizontal">
+            <div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
+                <CodeEditorComponent
+                    initialValue="// Enter JS code below"
+                    onChange={(value) => setInput(value)}
+                />
+                <CodePreviewComponent code={code} />
             </div>
-            <CodePreviewComponent code={code} />
-        </div>
+        </ResizableComponent>
     );
 };
 
