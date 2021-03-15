@@ -1,6 +1,6 @@
 import * as esbuild from "esbuild-wasm";
 import { fetchPlugin } from "./plugins/fetch-plugin";
-import {fetchPackage} from "./plugins/fetch-package";
+import { fetchPackage } from "./plugins/fetch-package";
 
 let service: esbuild.Service;
 

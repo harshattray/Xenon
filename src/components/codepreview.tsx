@@ -7,7 +7,9 @@ interface CodePreviewProps {
 
 const html = `
 <html>
-<head></head>
+<head>
+<style> html{ background-color : white}</style>
+</head>
 <body>
 <div id="root"></div>
 <script>
@@ -30,7 +32,10 @@ const CodePreviewComponent: React.FC<CodePreviewProps> = ({ code }) => {
     useEffect(() => {
         //resetting the htm block within the iframe
         iframeRef.current.srcdoc = html;
-        iframeRef.current.contentWindow.postMessage(code, "*"); // postMessage takes in 2 arguments and the 2nd one represents the domain name allowed
+        // postMessage takes in 2 arguments and the 2nd one represents the domain name allowed
+        setTimeout(() => {
+            iframeRef.current.contentWindow.postMessage(code, "*");
+        }, 50);
     }, [code]);
 
     return (
