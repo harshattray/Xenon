@@ -17,7 +17,7 @@ export interface DeleteVaultAction {
 export interface InsertVaultBefore {
 	type: ActionType.INSERT_VAULT_BEFORE;
 	payload: {
-		id: string;
+		id: string | null;
 		vaultType: VaultTypes;
 	};
 }
