@@ -1,11 +1,13 @@
 import "bulmaswatch/darkly/bulmaswatch.min.css";
 import ReactDOM from "react-dom";
-import CodeVaultComponent from "./components/codevault";
+// import CodeVaultComponent from "./components/codevault";
+import MarkDownEditor from './components/texteditor'
 
 const App = () => {
     return (
         <div>
-            <CodeVaultComponent />
+            {/* <CodeVaultComponent /> */}
+            <MarkDownEditor />
         </div>
     );
 };

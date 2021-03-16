@@ -1,5 +1,5 @@
 import { useRef, useEffect } from "react";
-import './codepreview.css';
+import "./codepreview.css";
 
 interface CodePreviewProps {
     code: string;
@@ -36,7 +36,10 @@ window.addEventListener('message',(event) => {
 </html>
 `;
 
-const CodePreviewComponent: React.FC<CodePreviewProps> = ({ code, bundleStatus }) => {
+const CodePreviewComponent: React.FC<CodePreviewProps> = ({
+    code,
+    bundleStatus,
+}) => {
     const iframeRef = useRef<any>();
 
     useEffect(() => {
@@ -50,10 +53,12 @@ const CodePreviewComponent: React.FC<CodePreviewProps> = ({ code, bundleStatus }
 
     return (
         <div className="preview-wrapper">
-            <iframe title="mirror"
+            <iframe
+                title="mirror"
                 ref={iframeRef}
                 sandbox="allow-scripts"
-                srcDoc={html} />
+                srcDoc={html}
+            />
             {bundleStatus && <div className="preview-error">{bundleStatus}</div>}
         </div>
     );
