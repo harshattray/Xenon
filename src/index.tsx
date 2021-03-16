@@ -1,14 +1,20 @@
-import "bulmaswatch/darkly/bulmaswatch.min.css";
 import ReactDOM from "react-dom";
+import { Provider } from 'react-redux'
+import { store } from './core'
 // import CodeVaultComponent from "./components/codevault";
 import MarkDownEditor from './components/texteditor'
+import "bulmaswatch/darkly/bulmaswatch.min.css";
+
 
 const App = () => {
     return (
-        <div>
-            {/* <CodeVaultComponent /> */}
-            <MarkDownEditor />
-        </div>
+        <Provider store={store}>
+            <div>
+                {/* <CodeVaultComponent /> */}
+                <MarkDownEditor />
+            </div>
+        </Provider>
+
     );
 };
 
