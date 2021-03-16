@@ -3,6 +3,7 @@ import './codepreview.css';
 
 interface CodePreviewProps {
     code: string;
+    bundleStatus: string;
 }
 
 const html = `
@@ -13,12 +14,21 @@ const html = `
 <body>
 <div id="root"></div>
 <script>
+const handleError = (error)=>{
+    const root = document.querySelector('#root');
+    root.innerHTML = '<div style="color:red"><h4>Runtime Error</h4>' + error + '</div>'
+}
+
+//handle async errors - replicate locally using setTimeout
+window.addEventListener('error',(event)=>{
+    handleError(event.error)
+})
+
 window.addEventListener('message',(event) => {
     try {
        eval(event.data)
     } catch(error){
-        const root = document.querySelector('#root');
-        root.innerHTML = '<div style="color:red"><h4>Runtime Error</h4>' + error + '</div>'
+        handleError(error)
     }
 },false);
 </script>
@@ -26,7 +36,7 @@ window.addEventListener('message',(event) => {
 </html>
 `;
 
-const CodePreviewComponent: React.FC<CodePreviewProps> = ({ code }) => {
+const CodePreviewComponent: React.FC<CodePreviewProps> = ({ code, bundleStatus }) => {
     const iframeRef = useRef<any>();
 
     useEffect(() => {
@@ -44,6 +54,7 @@ const CodePreviewComponent: React.FC<CodePreviewProps> = ({ code }) => {
                 ref={iframeRef}
                 sandbox="allow-scripts"
                 srcDoc={html} />
+            {bundleStatus && <div className="preview-error">{bundleStatus}</div>}
         </div>
     );
 };

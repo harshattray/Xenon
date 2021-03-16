@@ -7,12 +7,14 @@ import ResizableComponent from "./resizable";
 const CodeVaultComponent = () => {
     const [input, setInput] = useState("");
     const [code, setCode] = useState("");
+    const [error, setError] = useState("");
 
     useEffect(() => {
         //debounce 
         const timeSlug = setTimeout(async () => {
             const output = await ServiceTrigger(input);
-            setCode(output);
+            setCode(output.code);
+            setError(output.err);
         }, 1000);
         return () => {
             clearTimeout(timeSlug)
@@ -34,7 +36,7 @@ const CodeVaultComponent = () => {
                         onChange={(value) => setInput(value)}
                     />
                 </ResizableComponent>
-                <CodePreviewComponent code={code} />
+                <CodePreviewComponent code={code} bundleStatus={error} />
             </div>
         </ResizableComponent>
     );
