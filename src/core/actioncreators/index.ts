@@ -1,6 +1,5 @@
 import { ActionType } from "../actiontypes";
 import {
-	Action,
 	MoveVaultAction,
 	DeleteVaultAction,
 	InsertVaultBefore,

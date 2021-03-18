@@ -1,11 +1,17 @@
 import MDEditor from "@uiw/react-md-editor";
 import "./markdowneditor.css";
 import { useState, useEffect, useRef } from "react";
+import { Vault } from "../../core";
+import { useActions } from "../../hooks/useActions";
 
-const MarkDownEditor: React.FC = () => {
+interface MarkDownEditorProps {
+    block: Vault;
+}
+
+const MarkDownEditor: React.FC<MarkDownEditorProps> = ({ block }) => {
+    const { updateVault } = useActions();
     //state used to switch between
     const [editing, setEditing] = useState(false);
-    const [markDownValue, setMarkDownValue] = useState("# Header");
     const watcherRef = useRef<HTMLDivElement | null>(null);
 
     useEffect(() => {
@@ -31,8 +37,8 @@ const MarkDownEditor: React.FC = () => {
             <div className="text-editor card" ref={watcherRef}>
                 <div className="card-content">
                     <MDEditor
-                        value={markDownValue}
-                        onChange={(d) => setMarkDownValue(d || "")}
+                        value={block.content}
+                        onChange={(d) => updateVault(block.id, d || "")}
                     />
                 </div>
             </div>
@@ -40,7 +46,9 @@ const MarkDownEditor: React.FC = () => {
     }
     return (
         <div onClick={() => setEditing(true)}>
-            <MDEditor.Markdown source={markDownValue} />
+            <div className="card-content">
+                <MDEditor.Markdown source={block.content || "Click to Edit"} />
+            </div>
         </div>
     );
 };

@@ -1,4 +1,3 @@
-import { JSXElement } from 'jscodeshift';
 import { Vault } from '../core';
 import CodeVaultComponent from './codevault';
 import MarkDownEditor from './MarkdownEditorComponent/markdowneditor'
@@ -11,10 +10,10 @@ const BlockListItem: React.FC<BlockListItemProps> = ({ block }) => {
     let child: JSX.Element;
 
     if (block.type === 'code') {
-        child = <CodeVaultComponent />
+        child = <CodeVaultComponent block={block} />
     }
     else {
-        child = <MarkDownEditor />
+        child = <MarkDownEditor block={block} />
     }
     return (
         <div>{child}</div>
