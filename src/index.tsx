@@ -2,16 +2,18 @@ import ReactDOM from "react-dom";
 import { Provider } from 'react-redux'
 import { store } from './core'
 // import CodeVaultComponent from "./components/codevault";
-import MarkDownEditor from './components/TextEditorComponent/texteditor'
+// import MarkDownEditor from './components/TextEditorComponent/texteditor'
 import "bulmaswatch/darkly/bulmaswatch.min.css";
+import BlockList from "./components/blockList";
 
 
 const App = () => {
     return (
         <Provider store={store}>
             <div>
+                <BlockList />
                 {/* <CodeVaultComponent /> */}
-                <MarkDownEditor />
+                {/* <MarkDownEditor /> */}
             </div>
         </Provider>
 

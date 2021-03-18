@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import CodeEditorComponent from "./codeeditor";
-import CodePreviewComponent from "./codepreview";
+import CodeEditorComponent from "./CodeEditorComponent/codeeditor";
+import CodePreviewComponent from "./CodePreviewComponent/codepreview";
 import ServiceTrigger from "../bundler";
-import ResizableComponent from "./resizable";
+import ResizableComponent from "./ResizableComponent/resizable";
 
 const CodeVaultComponent = () => {
     const [input, setInput] = useState("");

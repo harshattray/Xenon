@@ -1,5 +1,5 @@
 import MDEditor from "@uiw/react-md-editor";
-import "./texteditor.css";
+import "./markdowneditor.css";
 import { useState, useEffect, useRef } from "react";
 
 const MarkDownEditor: React.FC = () => {
