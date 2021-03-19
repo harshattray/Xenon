@@ -2,22 +2,22 @@ import "./addcell.css";
 import { useActions } from "../../hooks/useActions";
 
 interface AddCellComponentProps {
-    prevCellId: string;
+    prevCellId: string | null;
     forceVisible?: boolean;
 }
 
 const AddCellComponent: React.FC<AddCellComponentProps> = ({ prevCellId, forceVisible }) => {
-    const { insertBeforeVault } = useActions();
+    const { insertVaultAfter } = useActions();
     return (
         <div className={`add-cell  ${forceVisible && 'force-visible'}`}>
             <div className="add-buttons">
-                <button className=" button is-rounded is-primary is-small" onClick={() => insertBeforeVault(prevCellId, "code")}>
+                <button className=" button is-rounded is-primary is-small" onClick={() => insertVaultAfter(prevCellId, "code")}>
                     <span className="icon is-small">
                         <i className="fas fa-code"></i>
                     </span>
                     <p className="inline-spacing">Code</p>
                 </button>
-                <button className=" button is-rounded is-primary is-small" onClick={() => insertBeforeVault(prevCellId, "markdown")}>
+                <button className=" button is-rounded is-primary is-small" onClick={() => insertVaultAfter(prevCellId, "markdown")}>
                     <span className="icon is-small">
                         <i className="fas fa-plus"></i>
                     </span>

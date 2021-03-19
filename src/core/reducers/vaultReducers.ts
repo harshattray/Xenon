@@ -32,7 +32,7 @@ export const reducer = produce(
 				state.order = state.order.filter((id) => id !== action.payload);
 				return state;
 
-			case ActionType.INSERT_VAULT_BEFORE:
+			case ActionType.INSERT_VAULT_AFTER:
 				const generatedVault: Vault = {
 					id: randomIdGenerator(),
 					type: action.payload.vaultType,
@@ -45,10 +45,10 @@ export const reducer = produce(
 					(id) => id === action.payload.id
 				);
 				if (currentIndex < 0) {
-					state.order.push(generatedVault.id);
+					state.order.unshift(generatedVault.id);
 				} else {
 					//insert the new vault at the generatedIndex
-					state.order.splice(currentIndex, 0, generatedVault.id);
+					state.order.splice(currentIndex +1 , 0, generatedVault.id);
 				}
 				return state;
 

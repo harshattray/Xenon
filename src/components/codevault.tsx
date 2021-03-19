@@ -1,33 +1,35 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import CodeEditorComponent from "./CodeEditorComponent/codeeditor";
 import CodePreviewComponent from "./CodePreviewComponent/codepreview";
-import ServiceTrigger from "../bundler";
 import ResizableComponent from "./ResizableComponent/resizable";
-import { Vault } from '../core';
-import { useActions } from '../hooks/useActions'
+import { Vault } from "../core";
+import { useActions } from "../hooks/useActions";
+import { useTypedSelector } from "../hooks/useTypedSelector";
 
 interface CodeVaultProps {
-    block: Vault
+    block: Vault;
 }
 
 const CodeVaultComponent: React.FC<CodeVaultProps> = ({ block }) => {
+    const { updateVault, createBundle } = useActions();
 
-    const { updateVault } = useActions()
-
-    const [code, setCode] = useState("");
-    const [error, setError] = useState("");
-
+    const bundle = useTypedSelector((state) => {
+        return state.bundle[block.id];
+    });
     useEffect(() => {
-        //debounce 
+        if (!bundle) {
+            createBundle(block.id, block.content);
+            return;
+        }
+        //debounce
         const timeSlug = setTimeout(async () => {
-            const output = await ServiceTrigger(block.content);
-            setCode(output.code);
-            setError(output.err);
+            createBundle(block.id, block.content);
         }, 1000);
         return () => {
-            clearTimeout(timeSlug)
-        }
-    }, [block.content])
+            clearTimeout(timeSlug);
+        };
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [block.content, block.id, createBundle]);
 
     // try {
     //     eval(result.outputFiles[0].text);
@@ -37,14 +39,25 @@ const CodeVaultComponent: React.FC<CodeVaultProps> = ({ block }) => {
 
     return (
         <ResizableComponent direction="vertical">
-            <div style={{ height: '100%', display: 'flex', flexDirection: 'row' }}>
+            <div style={{ height: "100%", display: "flex", flexDirection: "row" }}>
                 <ResizableComponent direction="horizontal">
                     <CodeEditorComponent
                         initialValue={block.content}
                         onChange={(value) => updateVault(block.id, value)}
                     />
                 </ResizableComponent>
-                <CodePreviewComponent code={code} bundleStatus={error} />
+                {!bundle || bundle.loading ? (
+                    <div className="progress-wrapper">
+                        <progress className="progress is-small is-primary" max="100">
+                            loading
+                        </progress>
+                    </div>
+                ) : (
+                    <CodePreviewComponent
+                        code={bundle.code}
+                        bundleStatus={bundle.error}
+                    />
+                )}
             </div>
         </ResizableComponent>
     );

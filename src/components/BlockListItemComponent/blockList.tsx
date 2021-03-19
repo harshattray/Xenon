@@ -1,8 +1,8 @@
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import BlockListItem from "./blockListItem";
-import AddCellComponent from '../AddCellComponent/addcell'
 import { Fragment } from "react";
 import { block } from "jscodeshift";
+import AddCellComponent from '../AddCellComponent/addcell'
 
 const BlockList: React.FC = () => {
     const blocks = useTypedSelector(({ vault: { order, data } }) => {
@@ -13,14 +13,14 @@ const BlockList: React.FC = () => {
 
     const renderedBlocks = blocks?.map((block) => (
         <Fragment key={block.id}>
-            <AddCellComponent prevCellId={block.id} />
             <BlockListItem block={block} />
+            <AddCellComponent prevCellId={block.id} />
         </Fragment>
     ));
-    return <div>
+    return (<div>
+        <AddCellComponent forceVisible={block.length === 0} prevCellId={null} />
         {renderedBlocks}
-        <AddCellComponent forceVisible={block.length === 0} prevCellId={''} />
-    </div>;
+    </div>);
 };
 
 export default BlockList;

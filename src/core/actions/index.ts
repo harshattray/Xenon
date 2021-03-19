@@ -14,8 +14,8 @@ export interface DeleteVaultAction {
 	payload: string;
 }
 
-export interface InsertVaultBefore {
-	type: ActionType.INSERT_VAULT_BEFORE;
+export interface insertVaultAfterAction {
+	type: ActionType.INSERT_VAULT_AFTER;
 	payload: {
 		id: string | null;
 		vaultType: VaultTypes;
@@ -30,10 +30,30 @@ export interface UpdateVaultAction {
 	};
 }
 
+export interface BundleStartAction {
+	type: ActionType.BUNDLE_START;
+	payload: {
+		vaultId: string;
+	};
+}
+
+export interface BundleCompleteAction {
+	type: ActionType.BUNDLE_COMPLETE;
+	payload: {
+		vaultId: string;
+		bundle: {
+			code: string;
+			err: string;
+		};
+	};
+}
+
 export type Action =
 	| MoveVaultAction
 	| DeleteVaultAction
-	| InsertVaultBefore
-	| UpdateVaultAction;
+	| insertVaultAfterAction
+	| UpdateVaultAction
+	| BundleStartAction
+	| BundleCompleteAction;
 
-export type Directions  = 'up' | 'down'
+export type Directions = "up" | "down";
