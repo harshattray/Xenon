@@ -5,7 +5,8 @@ import ResizableComponent from "../ResizableComponent/resizable";
 import { Vault } from "../../core";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import "./codevault.css"
+import { useCumulativeCode } from '../../hooks/useCumulativeCode'
+import "./codevault.css";
 
 interface CodeVaultProps {
     block: Vault;
@@ -13,24 +14,24 @@ interface CodeVaultProps {
 
 const CodeVaultComponent: React.FC<CodeVaultProps> = ({ block }) => {
     const { updateVault, createBundle } = useActions();
-
     const bundle = useTypedSelector((state) => {
         return state.bundle[block.id];
     });
+    const codeChain = useCumulativeCode(block.id)
     useEffect(() => {
         if (!bundle) {
-            createBundle(block.id, block.content);
+            createBundle(block.id, codeChain);
             return;
         }
         //debounce
         const timeSlug = setTimeout(async () => {
-            createBundle(block.id, block.content);
+            createBundle(block.id, codeChain);
         }, 1000);
         return () => {
             clearTimeout(timeSlug);
         };
         //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [block.content, block.id, createBundle]);
+    }, [codeChain, block.id, createBundle]);
 
     // try {
     //     eval(result.outputFiles[0].text);
@@ -52,7 +53,7 @@ const CodeVaultComponent: React.FC<CodeVaultProps> = ({ block }) => {
                         <div className="progress-wrapper">
                             <progress className="progress is-small is-primary" max="100">
                                 loading
-                        </progress>
+							</progress>
                         </div>
                     ) : (
                         <CodePreviewComponent

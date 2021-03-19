@@ -1,0 +1,7 @@
+.block-list {
+    margin:0 25px 50vh
+}
+
+.react-draggable-transparent-selection  .block-list {
+    margin-bottom: 100vh;
+}
