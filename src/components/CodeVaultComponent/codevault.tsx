@@ -5,6 +5,7 @@ import ResizableComponent from "../ResizableComponent/resizable";
 import { Vault } from "../../core";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { useCumulativeCode } from '../../hooks/useCumulativeCode'
 import "./codevault.css";
 
 interface CodeVaultProps {
@@ -16,59 +17,21 @@ const CodeVaultComponent: React.FC<CodeVaultProps> = ({ block }) => {
     const bundle = useTypedSelector((state) => {
         return state.bundle[block.id];
     });
-    const codeChain = useTypedSelector((state) => {
-        const { data, order } = state.vault;
-        const orderVaults = order.map((id: any) => {
-            return data[id];
-        });
-
-        const showVizFunc = `
-        import _React from 'react';
-        import _ReactDOM from 'react-dom';
-        var viz = (value) => {
-            const root = document.querySelector("#root");
-            if(typeof value === 'object'){
-                if(value.$$typeof && value.props){ //check if its react
-                    _ReactDOM.render(value,root);
-                }else{
-                    root.innerHTML = JSON.stringify(value)
-                }
-            }else{
-                root.innerHTML = (value)
-            }
-        }`
-        const showVizNoop = `var viz = () => {}`
-        const codeChain = [];
-        for (let v of orderVaults) {
-            if (v.type === "code") {
-                if (v.id === block.id) {
-                    codeChain.push(showVizFunc);
-                } else {
-                    codeChain.push(showVizNoop);
-                }
-                codeChain.push(v.content);
-            }
-            if (v.id === block.id) {
-                break;
-            }
-        }
-        return codeChain;
-    });
-
+    const codeChain = useCumulativeCode(block.id)
     useEffect(() => {
         if (!bundle) {
-            createBundle(block.id, codeChain.join("\n"));
+            createBundle(block.id, codeChain);
             return;
         }
         //debounce
         const timeSlug = setTimeout(async () => {
-            createBundle(block.id, codeChain.join("\n"));
+            createBundle(block.id, codeChain);
         }, 1000);
         return () => {
             clearTimeout(timeSlug);
         };
         //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [codeChain.join("\n"), block.id, createBundle]);
+    }, [codeChain, block.id, createBundle]);
 
     // try {
     //     eval(result.outputFiles[0].text);

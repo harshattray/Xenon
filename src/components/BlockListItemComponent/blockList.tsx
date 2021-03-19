@@ -3,6 +3,7 @@ import BlockListItem from "./blockListItem";
 import { Fragment } from "react";
 import { block } from "jscodeshift";
 import AddCellComponent from '../AddCellComponent/addcell'
+import './blocklist.css'
 
 const BlockList: React.FC = () => {
     const blocks = useTypedSelector(({ vault: { order, data } }) => {
@@ -17,7 +18,7 @@ const BlockList: React.FC = () => {
             <AddCellComponent prevCellId={block.id} />
         </Fragment>
     ));
-    return (<div>
+    return (<div className="block-list">
         <AddCellComponent forceVisible={block.length === 0} prevCellId={null} />
         {renderedBlocks}
     </div>);
