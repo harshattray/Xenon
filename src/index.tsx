@@ -5,7 +5,7 @@ import { store } from './core'
 // import MarkDownEditor from './components/TextEditorComponent/texteditor'
 import "bulmaswatch/darkly/bulmaswatch.min.css";
 import '@fortawesome/fontawesome-free/css/all.min.css'
-import BlockList from "./components/blockList";
+import BlockList from "./components/BlockListItemComponent/blockList";
 
 
 const App = () => {
