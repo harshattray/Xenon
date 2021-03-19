@@ -22,6 +22,8 @@ export const ServiceTrigger = async (userGenCode: string) => {
 				"process.env.NODE_ENV": '"production"',
 				global: "window",
 			},
+			jsxFactory:'_React.createElement',
+			jsxFragment:'_React.Fragment'
 		});
 		return  {
 			code: result.outputFiles[0].text,
