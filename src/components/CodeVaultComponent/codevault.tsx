@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import CodeEditorComponent from "./CodeEditorComponent/codeeditor";
-import CodePreviewComponent from "./CodePreviewComponent/codepreview";
-import ResizableComponent from "./ResizableComponent/resizable";
-import { Vault } from "../core";
-import { useActions } from "../hooks/useActions";
-import { useTypedSelector } from "../hooks/useTypedSelector";
+import CodeEditorComponent from "../CodeEditorComponent/codeeditor";
+import CodePreviewComponent from "../CodePreviewComponent/codepreview";
+import ResizableComponent from "../ResizableComponent/resizable";
+import { Vault } from "../../core";
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import "./codevault.css"
 
 interface CodeVaultProps {
     block: Vault;
@@ -46,18 +47,20 @@ const CodeVaultComponent: React.FC<CodeVaultProps> = ({ block }) => {
                         onChange={(value) => updateVault(block.id, value)}
                     />
                 </ResizableComponent>
-                {!bundle || bundle.loading ? (
-                    <div className="progress-wrapper">
-                        <progress className="progress is-small is-primary" max="100">
-                            loading
+                <div className="progress-capsule">
+                    {!bundle || bundle.loading ? (
+                        <div className="progress-wrapper">
+                            <progress className="progress is-small is-primary" max="100">
+                                loading
                         </progress>
-                    </div>
-                ) : (
-                    <CodePreviewComponent
-                        code={bundle.code}
-                        bundleStatus={bundle.error}
-                    />
-                )}
+                        </div>
+                    ) : (
+                        <CodePreviewComponent
+                            code={bundle.code}
+                            bundleStatus={bundle.error}
+                        />
+                    )}
+                </div>
             </div>
         </ResizableComponent>
     );

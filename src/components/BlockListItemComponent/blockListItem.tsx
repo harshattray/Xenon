@@ -1,5 +1,5 @@
 import { Vault } from "../../core";
-import CodeVaultComponent from "../codevault";
+import CodeVaultComponent from "../CodeVaultComponent/codevault";
 import MarkDownEditor from "../MarkdownEditorComponent/markdowneditor";
 import ControlCenterComponent from "../ControlCenterComponent/controlcenter";
 import "./blockListItem.css";
